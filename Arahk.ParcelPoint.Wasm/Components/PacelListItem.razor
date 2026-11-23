@@ -1,0 +1,85 @@
+@using System.Globalization
+
+<div class="list-item-container">
+    <div class="parcel-card" style="border-left: solid 5px @(State == "Ready" ? "green" : "blue");">
+        <!-- ข้อมูลหลักด้านซ้าย -->
+        <div class="info-section">
+            <div class="date-text">@ReceiveDate.ToString("d MMM yyyy", CultureInfo.InvariantCulture)</div>
+            <div class="id-text">@ParcelNumber</div>
+            <div class="provider-text">@Provider</div>
+        </div>
+
+        <!-- QR Code ด้านขวา -->
+        <div class="qr-section">
+            @if (State == "Ready")
+            {
+                <i class="fa-solid fa-qrcode" style="font-size: 2.5rem; color: green;"></i>
+            }
+            else
+            {
+                <i class="fa-solid fa-truck-ramp-box" style="font-size: 2rem; color: blue;"></i>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public DateTime ReceiveDate { get; set; } = DateTime.MinValue;
+    [Parameter] public string ParcelNumber { get; set; } = string.Empty;
+    [Parameter] public string Provider { get; set; } = string.Empty;
+    [Parameter] public string State { get; set; } = string.Empty;
+}
+
+<style>
+    .list-item-container {
+        padding: .4rem 0;
+    }
+
+    .parcel-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        background: #ffffff;
+        border-radius: 12px;      
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .parcel-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .info-section {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    .date-text {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a1a1a;
+    }
+
+    .id-text {
+        font-family: 'Courier New', Courier, monospace; /* ใช้ Monospace เพื่อให้อ่านเลข ID ง่ายขึ้น */
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .provider-text {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #4a90e2; /* ใส่สี Accent ให้ดูโดดเด่น */
+        margin-top: 2px;
+    }
+
+    .qr-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 15px;
+    }
+</style>

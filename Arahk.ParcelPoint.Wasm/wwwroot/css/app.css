@@ -1,7 +1,88 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding:0;
+    margin:0;
+    background: linear-gradient(to bottom, #008080 0%, #00A896 80%);
+    background-attachment: fixed;
+    overscroll-behavior: none;
 }
+
+h1,h2,h3,h4,h5,h6{
+    padding:0;
+    margin:0;
+}
+
 
 h1:focus {
     outline: none;
 }
+
+#main-container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#main-page {
+    flex: 1;
+    padding:1rem 1rem 3rem 1rem;    
+}
+
+#greeting {
+    display: flex;
+    color:white;
+    padding: 1rem;
+    justify-content: space-around;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    background-color: #008080;
+}
+
+#greeting div:first-child{
+    cursor: pointer;
+}
+
+#greeting div:nth-child(2){
+    flex:1;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+#greeting div:last-child{
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+#bottom-nav{
+    background-color: teal;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    text-transform: uppercase;
+    font-size: 1rem;
+    position: sticky;
+    width: 100vw;
+    bottom: 0;
+}
+
+#bottom-nav div {
+    text-align: center;
+    flex: 1;
+    min-height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#bottom-nav div:not(:last-child){
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+

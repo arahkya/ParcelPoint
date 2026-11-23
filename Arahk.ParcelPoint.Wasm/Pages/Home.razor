@@ -2,6 +2,86 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<style>
+    #location-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 0 1rem 0;
+        border-radius: .3rem;
+        background-color: lightseagreen;
+        max-width: 480px;
+    }
 
-Welcome to your new app.
+    #summary-section {
+        display: flex;
+        gap: 1rem;
+        max-width: 480px;
+    }
+
+    .summary-items {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: .4rem;
+        padding: .8rem 0;
+        position: relative;
+    }
+</style>
+
+<div id="location-section">
+    <div style="font-size: .8rem; display: flex; align-items: center; flex: 1;">
+        <div
+            style="padding: 1rem; background-color: #00A896; color: white; border-top-left-radius: .4rem; border-bottom-left-radius: .4rem;">
+            สถานที่
+        </div>
+        <div style="padding-left: 1rem; flex: 1; text-align: center; font-size: 1rem;">89/86 Groove Ville</div>
+    </div>
+    <i class="fa-solid fa-chevron-down" style="color: white; padding-right: 1rem;"></i>
+</div>
+
+<div style="padding-bottom: .6rem; color: #B2E2E2; font-size: .8rem">Summary</div>
+<div id="summary-section">
+    <div class="summary-items" style="border-bottom: solid .3rem lightgreen;">
+        <div style="position: absolute; top: .4rem; left: .4rem; color: dimgray">
+            <i class="fa-solid fa-people-carry-box" style="color: green"></i>
+        </div>
+        <span style="font-size: 2.3rem; font-weight: bolder; margin: 1rem 0 .2rem 0">19</span>
+        <div style="color: gray; font-size: .9rem;">
+            พร้อมรับ
+        </div>
+    </div>
+    <div class="summary-items" style="border-bottom: solid .3rem blue;">
+        <div style="position: absolute; top: .4rem; left: .4rem; color: dimgray">
+            <i class="fa-solid fa-truck-ramp-box" style="color: blue"></i>
+        </div>
+        <span style="font-size: 2.3rem; font-weight: bolder; margin: 1rem 0 .2rem 0">5</span>
+        <div style="color: gray; font-size: .9rem;">
+            รอรับ
+        </div>
+    </div>
+    <div class="summary-items" style="border-bottom: solid .3rem #FF8A65;">
+        <div style="position: absolute; top: .4rem; left: .4rem; color: dimgray">
+            <i class="fa-solid fa-boxes-stacked" style="color: #FF8A65"></i>
+        </div>
+        <span style="font-size: 2.3rem; font-weight: bolder; margin: 1rem 0 .2rem 0">24</span>
+        <div style="color: gray; font-size: .9rem;">
+            ทั้งหมด
+        </div>
+    </div>
+</div>
+
+<div style="padding-bottom: .6rem; color: #B2E2E2; font-size: .8rem; margin-top: 1rem;">List</div>
+<div style="max-width: 480px">
+    <PacelListItem State="Ready" ReceiveDate="new DateTime(2026,11,22)" ParcelNumber="11000001213"
+                   Provider="Flash Express"/>
+    <PacelListItem State="Pending" ReceiveDate="new DateTime(2026,11,12)" ParcelNumber="11000001291"
+                   Provider="Kerry Express"/>
+    <PacelListItem State="Ready" ReceiveDate="new DateTime(2026,11,10)" ParcelNumber="11000001288"
+                   Provider="Kerry Express"/>
+    <PacelListItem State="Pending" ReceiveDate="new DateTime(2026,11,10)" ParcelNumber="11000001287"
+                   Provider="Kerry Express"/>
+</div>
