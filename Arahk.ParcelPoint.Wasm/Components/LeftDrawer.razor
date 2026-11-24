@@ -1,0 +1,113 @@
+<style>
+    #backdrop {
+        position: absolute;
+        background-color: black;
+        opacity: .8;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .show {
+        animation: fadeIn .5s ease-in-out forwards;      
+        z-index: 999;
+    }
+
+    .close {
+        animation: fadeOut .5s ease-in-out forwards;        
+    }
+    
+    .container-show {
+        animation: slideIn .5s ease-in-out forwards;
+        
+    }
+
+    .container-close {        
+        animation: slideOut .2s ease-in-out forwards;
+    }
+
+    #container {
+        width: 90%;
+        max-width: 400px;
+        min-width: 300px;
+        height: 100vh;
+        background-color: white;
+        z-index: 1000;
+        position: absolute;
+    }
+
+    #CloseButton {
+        background-color: white;
+        border-radius: 2rem;
+        height: 2rem;
+        width: 2rem;
+        padding: .3rem .4rem .3rem .3rem;
+        position: absolute;
+        bottom: 1rem;
+        right: -1.3rem;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;            
+        }
+        to {
+            opacity: .7;            
+        }
+    }
+
+    @@keyframes fadeOut {
+        from {
+            opacity: .7;
+            z-index: 999;
+        }
+        to {
+            opacity: 0;
+            z-index: -999;
+        }
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @@keyframes slideOut {
+        from {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-100%);
+        }      
+    }
+
+</style>
+
+<div id="backdrop" class="@(Toggle ? "show" : "close")" @onclick="TapBackdrop"></div>
+<div id="container" class="@(Toggle ? "container-show" : "container-close")">
+    Hello World
+    <div id="CloseButton" @onclick="TapBackdrop">
+        <i class="fa-solid fa-circle-arrow-left" style="font-size: 2rem;"></i>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool Toggle { get; set; }
+
+    [Parameter] public EventCallback<bool> IsToggleChanged { get; set; }
+
+    private async Task TapBackdrop()
+    {
+        Toggle = false;
+
+        await IsToggleChanged.InvokeAsync(Toggle);
+    }
+
+}

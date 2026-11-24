@@ -25,7 +25,8 @@ h1:focus {
 
 #main-page {
     flex: 1;
-    padding:1rem 1rem 3rem 1rem;    
+    padding:1rem 1rem 3rem 1rem;   
+    z-index: 1;
 }
 
 #greeting {
@@ -38,7 +39,7 @@ h1:focus {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
     top: 0;
-    z-index: 99;
+    z-index: 2;
     background-color: #008080;
 }
 
@@ -70,6 +71,7 @@ h1:focus {
     position: sticky;
     width: 100vw;
     bottom: 0;
+    z-index: 2;
 }
 
 #bottom-nav div {

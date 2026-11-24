@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
+<LeftDrawer Toggle="@_openLeftDrawer" IsToggleChanged="@OnLeftDrawerToggled" />
+
 <div id="main-container">
     <div id="greeting">
-        <div>
+        <div onclick="@(() => OnLeftDrawerToggled(true))">
             <!-- แบบก้อนทึบ (Filled Version) -->
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="4" y="6" width="20" height="3" rx="1" fill="#FFFFFF"/>
@@ -26,3 +28,15 @@
         <div style="color: #B2E2E2; border-top: solid 5px #2D6B60;">Profile</div>
     </div>
 </div>
+
+@code
+{
+    private bool _openLeftDrawer = false;
+
+    private void OnLeftDrawerToggled(bool isOpen)
+    {
+        _openLeftDrawer = isOpen;
+        
+        StateHasChanged();
+    }
+}
