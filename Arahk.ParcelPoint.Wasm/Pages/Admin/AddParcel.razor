@@ -9,12 +9,10 @@
 
 <div class="add-parcel-page">
     <button type="button" class="back-home" @onclick="GoHome" aria-label="กลับหน้าหลัก">
-        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> กลับหน้าหลัก
+        <i class="fa-solid fa-chevron-left" aria-hidden="true"></i> กลับหน้าหลัก
     </button>
-    <div class="page-header">
-        <div class="page-title"><i class="fa-solid fa-box-plus"></i> เพิ่มพัสดุ</div>
-        <div class="page-subtitle">บันทึกพัสดุที่รับมาจากบริษัทขนส่ง</div>
-    </div>
+    <h1 class="page-title">เพิ่มพัสดุ</h1>
+    <div class="page-subtitle">บันทึกรายการพัสดุที่รับมาจากบริษัทขนส่ง</div>
 
     @if (_showSuccess)
     {
@@ -26,13 +24,23 @@
 
     <form onsubmit="event.preventDefault(); return false;">
         <!-- พัสดุ -->
-        <div class="section-card">
-            <div class="section-header"><i class="fa-solid fa-box"></i> พัสดุ</div>
+        <div class="section-card parcel-card">
+            <div class="section-header">
+                <span class="section-icon"><i class="fa-solid fa-box" aria-hidden="true"></i></span>
+                <span>พัสดุ</span>
+            </div>
 
             <div class="field">
                 <div class="field-label">เลขที่พัสดุ<span class="required">*</span></div>
-                <input class="field-input mono @(ParcelNumberInvalid ? "field-input-invalid" : null)"
-                       @bind="Model.ParcelNumber" placeholder="เช่น 11000001213" />
+                <input class="field-input tracking-input @(ParcelNumberInvalid ? "field-input-invalid" : null)"
+                       @bind="Model.ParcelNumber" @bind:event="oninput"
+                       placeholder="เช่น 11000001213" />
+                <div class="tracking-reveal @(string.IsNullOrWhiteSpace(Model.ParcelNumber) ? null : "is-on")">
+                    <div class="tracking-label">
+                        <div class="barcode" aria-hidden="true"></div>
+                        <div class="tracking-echo">@Model.ParcelNumber</div>
+                    </div>
+                </div>
                 @if (ParcelNumberInvalid)
                 {
                     <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกเลขที่พัสดุ</div>
@@ -74,7 +82,10 @@
 
         <!-- ผู้ส่ง -->
         <div class="section-card">
-            <div class="section-header"><i class="fa-solid fa-user"></i> ผู้ส่ง</div>
+            <div class="section-header">
+                <span class="section-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
+                <span>ผู้ส่ง</span>
+            </div>
 
             <div class="field">
                 <div class="field-label">ชื่อผู้ส่ง</div>
@@ -91,7 +102,10 @@
 
         <!-- ผู้รับ -->
         <div class="section-card">
-            <div class="section-header"><i class="fa-solid fa-user-check"></i> ผู้รับ</div>
+            <div class="section-header">
+                <span class="section-icon"><i class="fa-solid fa-user-check" aria-hidden="true"></i></span>
+                <span>ผู้รับ</span>
+            </div>
 
             <div class="field">
                 <div class="field-label">ชื่อผู้รับ<span class="required">*</span></div>
@@ -122,9 +136,12 @@
             </div>
         </div>
 
-        <!-- วันที่ -->
+        <!-- รายละเอียด -->
         <div class="section-card">
-            <div class="section-header"><i class="fa-solid fa-calendar-check"></i> วันที่</div>
+            <div class="section-header">
+                <span class="section-icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+                <span>รายละเอียด</span>
+            </div>
 
             <div class="field">
                 <div class="field-label">วันที่รับพัสดุ<span class="required">*</span></div>
@@ -133,13 +150,9 @@
                     <i class="fa-regular fa-calendar"></i> บันทึกวันนี้: @TodayHint
                 </div>
             </div>
-        </div>
-
-        <!-- หมายเหตุ -->
-        <div class="section-card">
-            <div class="section-header"><i class="fa-solid fa-note-sticky"></i> หมายเหตุ</div>
 
             <div class="field">
+                <div class="field-label">หมายเหตุ</div>
                 <textarea class="field-input" rows="3" @bind="Model.Notes"
                           placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
             </div>

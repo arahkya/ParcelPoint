@@ -46,7 +46,7 @@
 
 <div class="page-label" style="margin-top: 1rem;">List</div>
 <div class="parcel-controls">
-    <input class="parcel-search" type="search" @bind="Search"
+    <input class="parcel-search" type="search" @bind="Search" @bind:event="oninput"
            placeholder="ค้นหาเลขพัสดุ / บริษัทขนส่ง" aria-label="ค้นหาพัสดุ" />
     <div class="parcel-filter" role="group" aria-label="กรองตามสถานะ">
         <button type="button" class="parcel-chip @FilterClass("All")" @onclick='() => SetFilter("All")'>ทั้งหมด</button>
