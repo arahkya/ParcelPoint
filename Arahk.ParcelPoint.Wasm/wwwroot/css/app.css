@@ -32,9 +32,9 @@ h1:focus {
 #greeting {
     display: flex;
     color:white;
-    padding: 1rem;
-    justify-content: space-around;
-    gap: 1rem;
+    padding: .75rem 1rem;
+    justify-content: flex-start;
+    gap: .75rem;
     align-items: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
@@ -43,18 +43,29 @@ h1:focus {
     background-color: #008080;
 }
 
-#greeting div:first-child{
+#greeting > div:first-child{
+    flex: 0 0 auto;
     cursor: pointer;
 }
 
-#greeting div:nth-child(2){
-    flex:1;
+#greeting > div:nth-child(2){
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 1.25rem;
     font-weight: 700;
     letter-spacing: -0.5px;
 }
 
-#greeting div:last-child{
+#greeting > div:last-child{
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: right;
     font-size: 1rem;
     font-weight: 400;
     opacity: 0.9;
@@ -69,7 +80,7 @@ h1:focus {
     text-transform: uppercase;
     font-size: 1rem;
     position: sticky;
-    width: 100vw;
+    width: 100%;
     bottom: 0;
     z-index: 2;
 }
