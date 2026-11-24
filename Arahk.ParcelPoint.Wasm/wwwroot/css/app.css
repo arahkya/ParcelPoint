@@ -45,6 +45,7 @@ html, body {
     overscroll-behavior: none;
 }
 
+
 h1, h2, h3, h4, h5, h6 {
     padding: 0;
     margin: 0;
@@ -59,6 +60,34 @@ h1:focus {
     outline: 2px solid var(--brand-600);
     outline-offset: 2px;
 }
+
+/*
+  ------------------------------------------------------------------
+  Placeholder pages (History / Profile)
+  ------------------------------------------------------------------
+*/
+.placeholder-page {
+    max-width: 480px;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    color: var(--on-brand);
+}
+
+    .placeholder-page .placeholder-icon {
+        font-size: 2.5rem;
+        opacity: .8;
+    }
+
+    .placeholder-page h1 {
+        font-size: 1.3rem;
+        margin: .75rem 0 .5rem;
+    }
+
+    .placeholder-page p {
+        color: var(--on-brand-muted);
+        font-size: .95rem;
+        margin: 0;
+    }
 
 /* Respect the user's motion preference */
 @media (prefers-reduced-motion: reduce) {

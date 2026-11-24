@@ -1,161 +1,16 @@
-<style>
-    #backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: black;
-        opacity: .8;
-        height: 100vh;
-        width: 100%;
-    }
-
-    .show {
-        animation: fadeIn .5s ease-in-out forwards;      
-        z-index: 999;
-    }
-
-    .close {
-        animation: fadeOut .5s ease-in-out forwards;        
-    }
-    
-    .container-show {
-        animation: slideIn .5s ease-in-out forwards;
-        
-    }
-
-    .container-close {        
-        animation: slideOut .2s ease-in-out forwards;
-    }
-
-    #container {
-        width: 90%;
-        max-width: 400px;
-        min-width: 300px;
-        height: 100vh;
-        background-color: white;
-        z-index: 1000;
-        position: fixed;
-        top: 0;
-        left: 0;
-    }
-
-    #CloseButton {
-        background-color: white;
-        border: none;
-        border-radius: 2rem;
-        height: 2.75rem;
-        width: 2.75rem;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: var(--text-primary);
-        position: absolute;
-        bottom: 1rem;
-        right: -1.3rem;
-    }
-
-    #drawer-header {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        padding: 1.1rem 1rem;
-        font-size: .95rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .5px;
-        color: var(--brand-600);
-        border-bottom: 1px solid #e8e8e8;
-    }
-
-    #drawer-nav {
-        display: flex;
-        flex-direction: column;
-        gap: .3rem;
-        padding: .8rem;
-    }
-
-    .drawer-link {
-        display: flex;
-        align-items: center;
-        gap: .8rem;
-        padding: .8rem 1rem;
-        border-radius: .5rem;
-        color: #333;
-        text-decoration: none;
-        font-size: 1rem;
-        transition: background-color .15s ease, color .15s ease;
-    }
-
-    .drawer-link i {
-        width: 1.5rem;
-        text-align: center;
-        color: var(--brand-600);
-    }
-
-    .drawer-link:hover {
-        background-color: #e8f5f3;
-        color: var(--brand-700);
-    }
-
-    @@keyframes fadeIn {
-        from {
-            opacity: 0;            
-        }
-        to {
-            opacity: .7;            
-        }
-    }
-
-    @@keyframes fadeOut {
-        from {
-            opacity: .7;
-            z-index: 999;
-        }
-        to {
-            opacity: 0;
-            z-index: -999;
-        }
-    }
-
-    @@keyframes slideIn {
-        from {
-            opacity: 0;
-            transform: translateX(-100%);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    @@keyframes slideOut {
-        from {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        to {
-            opacity: 0;
-            transform: translateX(-100%);
-        }      
-    }
-
-</style>
-
-<div id="backdrop" class="@(Toggle ? "show" : "close")" @onclick="TapBackdrop"></div>
-<div id="container" class="@(Toggle ? "container-show" : "container-close")">
-    <div id="drawer-header">
+<div class="backdrop @(Toggle ? "show" : "close")" @onclick="TapBackdrop"></div>
+<div class="drawer @(Toggle ? "drawer-show" : "drawer-close")">
+    <div class="drawer-header">
         <i class="fa-solid fa-bars-staggered"></i>
         เมนู
     </div>
-    <nav id="drawer-nav">
+    <nav class="drawer-nav">
         <a href="/admin/add-parcel" class="drawer-link" @onclick:preventDefault @onclick='() => NavigateAndCloseAsync("/admin/add-parcel")'>
             <i class="fa-solid fa-box-plus" aria-hidden="true"></i>
             เพิ่มพัสดุ
         </a>
     </nav>
-    <button type="button" id="CloseButton" @onclick="TapBackdrop" aria-label="ปิดเมนู">
+    <button type="button" class="close-button" @onclick="TapBackdrop" aria-label="ปิดเมนู">
         <i class="fa-solid fa-circle-arrow-left" style="font-size: 2rem;" aria-hidden="true"></i>
     </button>
 </div>
