@@ -3,10 +3,14 @@
 @implements IDisposable
 @using Arahk.ParcelPoint.Wasm.Models
 @using System.Globalization
+@inject NavigationManager Navigation
 
 <PageTitle>เพิ่มพัสดุ</PageTitle>
 
 <div class="add-parcel-page">
+    <button type="button" class="back-home" @onclick="GoHome" aria-label="กลับหน้าหลัก">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> กลับหน้าหลัก
+    </button>
     <div class="page-header">
         <div class="page-title"><i class="fa-solid fa-box-plus"></i> เพิ่มพัสดุ</div>
         <div class="page-subtitle">บันทึกพัสดุที่รับมาจากบริษัทขนส่ง</div>
@@ -189,6 +193,8 @@
     }
 
     private void SetStatus(string status) => Model.Status = status;
+
+    private void GoHome() => Navigation.NavigateTo("/");
 
     // Formats Thai mobile numbers while typing: keeps digits only, groups as 08x-xxx-xxxx.
     private static string FormatThaiPhone(string? value)

@@ -2,6 +2,33 @@
     max-width: 480px;
 }
 
+/* Back-to-home control — a clear, tappable pill on the brand gradient. */
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: .9rem;
+    padding: .55rem 1rem .55rem .85rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 2rem;
+    background-color: rgba(255, 255, 255, 0.12);
+    color: var(--on-brand);
+    font-size: .9rem;
+    font-weight: 600;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    transition: background-color .15s ease;
+}
+
+.back-home:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.back-home:active {
+    background-color: rgba(255, 255, 255, 0.28);
+}
+
 .page-header {
     display: flex;
     flex-direction: column;

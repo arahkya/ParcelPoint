@@ -18,8 +18,8 @@
 }
 
 .drawer {
-    width: 90%;
-    max-width: 400px;
+    width: 85%;
+    max-width: 340px;
     min-width: 300px;
     height: 100vh;
     background-color: white;
@@ -27,6 +27,7 @@
     position: fixed;
     top: 0;
     left: 0;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.28);
 }
 
 .drawer.drawer-show {
@@ -37,21 +38,33 @@
     animation: slideOut .2s ease-in-out forwards;
 }
 
+/* Top-right close — a clearly-visible, high-contrast, easy-to-hit button. */
 .close-button {
-    background-color: white;
-    border: none;
-    border-radius: 2rem;
-    height: 2.75rem;
+    margin-left: auto;
+    flex: 0 0 auto;
     width: 2.75rem;
-    padding: 0;
+    height: 2.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    border: 1px solid #cddad7;
+    border-radius: 50%;
+    background-color: #f2f6f5;
     color: var(--text-primary);
-    position: absolute;
-    bottom: 1rem;
-    right: -1.3rem;
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+
+.close-button i {
+    font-size: 1.2rem;
+}
+
+.close-button:hover {
+    background-color: #e6ecec;
+}
+
+.close-button:active {
+    background-color: #d9e0de;
 }
 
 .drawer-header {

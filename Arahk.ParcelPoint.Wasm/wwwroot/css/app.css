@@ -185,18 +185,22 @@ h1:focus {
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
     background: none;
     border: none;
-    padding: .4rem;
-    margin: -.4rem;
-    border-radius: .4rem;
+    border-radius: .5rem;
     cursor: pointer;
     color: var(--on-brand);
     transition: background-color .15s ease;
 }
 
 .greeting-burger:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.14);
+}
+
+.greeting-burger:active {
+    background-color: rgba(255, 255, 255, 0.24);
 }
 
 #greeting .greeting-title {

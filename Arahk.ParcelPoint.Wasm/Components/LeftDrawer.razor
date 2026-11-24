@@ -3,6 +3,9 @@
     <div class="drawer-header">
         <i class="fa-solid fa-bars-staggered"></i>
         เมนู
+        <button type="button" class="close-button" @onclick="TapBackdrop" aria-label="ปิดเมนู">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
     </div>
     <nav class="drawer-nav">
         <a href="/admin/add-parcel" class="drawer-link" @onclick:preventDefault @onclick='() => NavigateAndCloseAsync("/admin/add-parcel")'>
@@ -10,9 +13,6 @@
             เพิ่มพัสดุ
         </a>
     </nav>
-    <button type="button" class="close-button" @onclick="TapBackdrop" aria-label="ปิดเมนู">
-        <i class="fa-solid fa-circle-arrow-left" style="font-size: 2rem;" aria-hidden="true"></i>
-    </button>
 </div>
 
 @code {

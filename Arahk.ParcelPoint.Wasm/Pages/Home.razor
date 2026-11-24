@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject NavigationManager Navigation
 @using Arahk.ParcelPoint.Wasm.Models
 
 <PageTitle>Home</PageTitle>
@@ -74,11 +73,6 @@
         }
     }
 </div>
-
-<button type="button" class="fab-add" aria-label="เพิ่มพัสดุ"
-        @onclick='() => Navigation.NavigateTo("/admin/add-parcel")'>
-    <i class="fa-solid fa-plus"></i>
-</button>
 
 @code {
     private record ParcelItem(string State, DateTime ReceiveDate, string ParcelNumber, string Provider);
