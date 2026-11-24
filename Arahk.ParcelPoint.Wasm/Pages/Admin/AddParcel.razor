@@ -42,15 +42,15 @@
     }
 
     .banner-success {
-        background-color: #e6f7ea;
-        color: #1e7e34;
-        border: 1px solid #b7e4c7;
+        background-color: var(--status-ready-soft);
+        color: var(--status-ready);
+        border: 1px solid color-mix(in srgb, var(--status-ready) 35%, white);
     }
 
     .banner-error {
-        background-color: #fdecec;
-        color: #c0392b;
-        border: 1px solid #f5c6c6;
+        background-color: var(--status-error-soft);
+        color: var(--status-error);
+        border: 1px solid color-mix(in srgb, var(--status-error) 35%, white);
     }
 
     .section-card {
@@ -68,7 +68,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .4px;
-        color: #00A896;
+        color: var(--brand-600);
         margin-bottom: .9rem;
         padding-bottom: .5rem;
         border-bottom: 1px solid #e8f4f2;
@@ -84,12 +84,12 @@
 
     .field-label {
         font-size: .8rem;
-        color: dimgray;
+        color: var(--text-secondary);
         margin-bottom: .3rem;
     }
 
     .required {
-        color: #e74c3c;
+        color: var(--status-error);
         margin-left: .2rem;
     }
 
@@ -101,13 +101,13 @@
         border-radius: .3rem;
         font-size: .95rem;
         font-family: inherit;
-        color: #1a1a1a;
+        color: var(--text-primary);
         background-color: white;
     }
 
     .field-input:focus {
         outline: none;
-        border-color: #00A896;
+        border-color: var(--brand-600);
     }
 
     .field-input.mono {
@@ -131,23 +131,23 @@
         border: 1px solid #d8d8d8;
         border-radius: .3rem;
         background-color: white;
-        color: dimgray;
+        color: var(--text-secondary);
         font-size: .9rem;
         cursor: pointer;
         transition: background-color .15s ease, border-color .15s ease, color .15s ease;
     }
 
     .status-option-active-ready {
-        background-color: #e6f7ea;
-        border-color: green;
-        color: green;
+        background-color: var(--status-ready-soft);
+        border-color: var(--status-ready);
+        color: var(--status-ready);
         font-weight: 700;
     }
 
     .status-option-active-pending {
-        background-color: #eef4fc;
-        border-color: #4a90e2;
-        color: #4a90e2;
+        background-color: var(--status-pending-soft);
+        border-color: var(--status-pending);
+        color: var(--status-pending);
         font-weight: 700;
     }
 
@@ -174,9 +174,9 @@
         padding: 1rem;
         font-size: 1.08rem;
         letter-spacing: .3px;
-        color: white;
-        background-color: #00A896;
-        background-image: linear-gradient(180deg, #00BFA5 0%, #00A896 45%, #008080 100%);
+        color: var(--on-brand);
+        background-color: var(--brand-600);
+        background-image: var(--brand-gradient);
         box-shadow: 0 2px 6px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .25);
         transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
     }
@@ -194,14 +194,14 @@
         width: 100%;
         padding: .6rem 1rem;
         background-color: transparent;
-        color: #008080;
+        color: var(--brand-700);
         font-size: .92rem;
         font-weight: 600;
         transition: background-color .15s ease;
     }
 
     .btn-secondary:hover {
-        background-color: rgba(0, 128, 128, .08);
+        background-color: color-mix(in srgb, var(--brand-700) 8%, transparent);
     }
 </style>
 

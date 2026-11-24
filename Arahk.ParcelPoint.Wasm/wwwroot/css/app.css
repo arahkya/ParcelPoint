@@ -1,23 +1,76 @@
+/*
+    Design tokens — single source of truth for the brand + status palette.
+    Prefer these over raw hex/named colours so a status reads the same in
+    the list, the summary and the form.
+*/
+:root {
+    /* Brand — teal scale (900 darkest → 100 lightest) */
+    --brand-900: #2D6B60;
+    --brand-700: #008080;
+    --brand-600: #00A896;
+    --brand-500: #00BFA5;
+    --brand-100: #B2E2E2;
+
+    /* Text on brand (teal) surfaces */
+    --on-brand: #ffffff;
+    --on-brand-muted: rgba(255, 255, 255, 0.92);
+
+    /* Status — one token per status, used identically everywhere */
+    --status-ready: #1e7e34;
+    --status-ready-soft: #e6f7ea;
+    --status-pending: #2f6fb0;
+    --status-pending-soft: #eef4fc;
+    --status-total: #ff8a65;
+    --status-error: #c0392b;
+    --status-error-soft: #fdecec;
+
+    /* Text accent (links, provider names, etc.) */
+    --text-accent: #2f6fb0;
+
+    /* Surfaces + body text */
+    --surface: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+
+    /* Brand button / FAB gradient */
+    --brand-gradient: linear-gradient(180deg, var(--brand-500) 0%, var(--brand-600) 60%, var(--brand-700) 100%);
+}
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    padding:0;
-    margin:0;
-    background: linear-gradient(to bottom, #008080 0%, #00A896 80%);
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(to bottom, var(--brand-700) 0%, var(--brand-600) 80%);
     background-attachment: fixed;
     overscroll-behavior: none;
 }
 
-h1,h2,h3,h4,h5,h6{
-    padding:0;
-    margin:0;
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
 }
-
 
 h1:focus {
     outline: none;
 }
 
-#main-container{
+/* Accessible focus indicator for keyboard users */
+:focus-visible {
+    outline: 2px solid var(--brand-600);
+    outline-offset: 2px;
+}
+
+/* Respect the user's motion preference */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+#main-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -25,13 +78,21 @@ h1:focus {
 
 #main-page {
     flex: 1;
-    padding:1rem 1rem 3rem 1rem;   
+    padding: 1rem 1rem 3rem 1rem;
     z-index: 1;
+}
+
+/* Small muted heading that sits on the brand background */
+.page-label {
+    padding-bottom: .6rem;
+    color: var(--on-brand-muted);
+    font-size: .8rem;
+    font-weight: 600;
 }
 
 #greeting {
     display: flex;
-    color:white;
+    color: var(--on-brand);
     padding: .75rem 1rem;
     justify-content: flex-start;
     gap: .75rem;
@@ -40,15 +101,30 @@ h1:focus {
     position: sticky;
     top: 0;
     z-index: 2;
-    background-color: #008080;
+    background-color: var(--brand-700);
 }
 
-#greeting > div:first-child{
+/* Hamburger — a real button, not a clickable div */
+.greeting-burger {
     flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: .4rem;
+    margin: -.4rem;
+    border-radius: .4rem;
     cursor: pointer;
+    color: var(--on-brand);
+    transition: background-color .15s ease;
 }
 
-#greeting > div:nth-child(2){
+.greeting-burger:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+#greeting .greeting-title {
     flex: 0 1 auto;
     min-width: 0;
     overflow: hidden;
@@ -59,7 +135,7 @@ h1:focus {
     letter-spacing: -0.5px;
 }
 
-#greeting > div:last-child{
+#greeting .greeting-sub {
     flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
@@ -71,31 +147,50 @@ h1:focus {
     opacity: 0.9;
 }
 
-#bottom-nav{
-    background-color: teal;
+/* Bottom nav — functional, keyboard- and screen-reader-friendly */
+#bottom-nav {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    color: white;
-    text-transform: uppercase;
-    font-size: 1rem;
-    position: sticky;
+    align-items: stretch;
     width: 100%;
+    position: sticky;
     bottom: 0;
     z-index: 2;
+    background-color: var(--brand-700);
+    color: var(--on-brand);
+    text-transform: uppercase;
+    font-size: .85rem;
+    letter-spacing: .04em;
 }
 
-#bottom-nav div {
-    text-align: center;
+.bottom-nav-item {
     flex: 1;
     min-height: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#bottom-nav div:not(:last-child){
+    padding: .8rem 0 0;
+    margin-top: -4px;          /* sit on top of the 4px "track" below */
+    border: none;
+    border-top: 4px solid transparent;
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background: none;
+    color: var(--on-brand);
+    font: inherit;
+    font-weight: 400;
+    text-transform: inherit;
+    text-decoration: none;
+    letter-spacing: inherit;
+    cursor: pointer;
+    transition: background-color .15s ease;
 }
 
+.bottom-nav-item:last-child {
+    border-right: none;
+}
 
+.bottom-nav-item.active,
+.bottom-nav-item[aria-current="page"] {
+    border-top-color: var(--on-brand);
+    font-weight: 700;
+}

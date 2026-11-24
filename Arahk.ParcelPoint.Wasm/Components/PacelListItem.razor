@@ -1,23 +1,26 @@
 @using System.Globalization
 
-<div class="list-item-container">
-    <div class="parcel-card" style="border-left: solid 5px @(State == "Ready" ? "green" : "blue");">
+<div class="list-item-container" role="listitem">
+    <div class="parcel-card" style="border-left: solid 5px @(IsReady ? "var(--status-ready)" : "var(--status-pending)");">
         <!-- ข้อมูลหลักด้านซ้าย -->
         <div class="info-section">
             <div class="date-text">@ReceiveDate.ToString("d MMM yyyy", CultureInfo.InvariantCulture)</div>
             <div class="id-text">@ParcelNumber</div>
             <div class="provider-text">@Provider</div>
+            <div class="status-text @(IsReady ? "status-ready" : "status-pending")">
+                @(IsReady ? "พร้อมรับ" : "รอรับ")
+            </div>
         </div>
 
         <!-- QR Code ด้านขวา -->
         <div class="qr-section">
-            @if (State == "Ready")
+            @if (IsReady)
             {
-                <i class="fa-solid fa-qrcode" style="font-size: 2.5rem; color: green;"></i>
+                <i class="fa-solid fa-qrcode" style="font-size: 2.5rem; color: var(--status-ready);" aria-hidden="true"></i>
             }
             else
             {
-                <i class="fa-solid fa-truck-ramp-box" style="font-size: 2rem; color: blue;"></i>
+                <i class="fa-solid fa-truck-ramp-box" style="font-size: 2rem; color: var(--status-pending);" aria-hidden="true"></i>
             }
         </div>
     </div>
@@ -28,6 +31,8 @@
     [Parameter] public string ParcelNumber { get; set; } = string.Empty;
     [Parameter] public string Provider { get; set; } = string.Empty;
     [Parameter] public string State { get; set; } = string.Empty;
+
+    private bool IsReady => State == "Ready";
 }
 
 <style>
@@ -41,7 +46,7 @@
         align-items: center;
         padding: 1rem;
         background: #ffffff;
-        border-radius: 12px;      
+        border-radius: 12px;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
@@ -61,7 +66,7 @@
     .date-text {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #1a1a1a;
+        color: var(--text-primary);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -70,7 +75,7 @@
     .id-text {
         font-family: 'Courier New', Courier, monospace; /* ใช้ Monospace เพื่อให้อ่านเลข ID ง่ายขึ้น */
         font-size: 0.9rem;
-        color: #666;
+        color: var(--text-secondary);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -79,11 +84,25 @@
     .provider-text {
         font-size: 0.85rem;
         font-weight: 500;
-        color: #4a90e2; /* ใส่สี Accent ให้ดูโดดเด่น */
+        color: var(--text-accent); /* สี Accent ให้ดูโดดเด่น */
         margin-top: 2px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+    }
+
+    .status-text {
+        font-size: .8rem;
+        font-weight: 700;
+        margin-top: 2px;
+    }
+
+    .status-ready {
+        color: var(--status-ready);
+    }
+
+    .status-pending {
+        color: var(--status-pending);
     }
 
     .qr-section {

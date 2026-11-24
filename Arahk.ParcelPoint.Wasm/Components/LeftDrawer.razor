@@ -41,10 +41,16 @@
 
     #CloseButton {
         background-color: white;
+        border: none;
         border-radius: 2rem;
-        height: 2rem;
-        width: 2rem;
-        padding: .3rem .4rem .3rem .3rem;
+        height: 2.75rem;
+        width: 2.75rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-primary);
         position: absolute;
         bottom: 1rem;
         right: -1.3rem;
@@ -59,7 +65,7 @@
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: .5px;
-        color: #00A896;
+        color: var(--brand-600);
         border-bottom: 1px solid #e8e8e8;
     }
 
@@ -85,12 +91,12 @@
     .drawer-link i {
         width: 1.5rem;
         text-align: center;
-        color: #00A896;
+        color: var(--brand-600);
     }
 
     .drawer-link:hover {
         background-color: #e8f5f3;
-        color: #008080;
+        color: var(--brand-700);
     }
 
     @@keyframes fadeIn {
@@ -144,18 +150,14 @@
         เมนู
     </div>
     <nav id="drawer-nav">
-        <a href="/" class="drawer-link" @onclick:preventDefault @onclick='() => NavigateAndCloseAsync("/")'>
-            <i class="fa-solid fa-house"></i>
-            หน้าแรก
-        </a>
         <a href="/admin/add-parcel" class="drawer-link" @onclick:preventDefault @onclick='() => NavigateAndCloseAsync("/admin/add-parcel")'>
-            <i class="fa-solid fa-box-plus"></i>
+            <i class="fa-solid fa-box-plus" aria-hidden="true"></i>
             เพิ่มพัสดุ
         </a>
     </nav>
-    <div id="CloseButton" @onclick="TapBackdrop">
-        <i class="fa-solid fa-circle-arrow-left" style="font-size: 2rem;"></i>
-    </div>
+    <button type="button" id="CloseButton" @onclick="TapBackdrop" aria-label="ปิดเมนู">
+        <i class="fa-solid fa-circle-arrow-left" style="font-size: 2rem;" aria-hidden="true"></i>
+    </button>
 </div>
 
 @code {

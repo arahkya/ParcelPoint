@@ -10,7 +10,7 @@
         align-items: center;
         margin: 0 0 1rem 0;
         border-radius: .3rem;
-        background-color: lightseagreen;
+        background-color: var(--brand-600);
         width: 100%;
         max-width: 480px;
         overflow: hidden;
@@ -27,8 +27,8 @@
     .location-label {
         flex: 0 0 auto;
         padding: 1rem;
-        background-color: #00A896;
-        color: white;
+        background-color: var(--brand-700);
+        color: var(--on-brand);
         white-space: nowrap;
     }
 
@@ -87,9 +87,9 @@
         height: 3.25rem;
         border-radius: 50%;
         border: none;
-        color: white;
+        color: var(--on-brand);
         font-size: 1.4rem;
-        background: linear-gradient(180deg, #00BFA5 0%, #00A896 60%, #008080 100%);
+        background: var(--brand-gradient);
         box-shadow: 0 4px 14px rgba(0, 60, 55, .35);
         cursor: pointer;
         transition: transform .08s ease, box-shadow .08s ease;
@@ -108,42 +108,42 @@
         </div>
         <div class="location-value">89/86 Groove Ville</div>
     </div>
-    <i class="fa-solid fa-chevron-down location-icon"></i>
+    <i class="fa-solid fa-chevron-down location-icon" aria-hidden="true"></i>
 </div>
 
-<div style="padding-bottom: .6rem; color: #B2E2E2; font-size: .8rem">Summary</div>
-<div id="summary-section">
-    <div class="summary-items" style="border-bottom: solid .3rem lightgreen;">
-        <div style="position: absolute; top: .4rem; left: .4rem; color: dimgray">
-            <i class="fa-solid fa-people-carry-box" style="color: green"></i>
+<div class="page-label">Summary</div>
+<div id="summary-section" role="list" aria-label="สรุปพัสดุ">
+    <div class="summary-items" role="listitem" style="border-bottom: solid .3rem var(--status-ready);">
+        <div style="position: absolute; top: .4rem; left: .4rem; color: var(--text-secondary)">
+            <i class="fa-solid fa-people-carry-box" style="color: var(--status-ready)" aria-hidden="true"></i>
         </div>
         <span class="summary-value">19</span>
-        <div style="color: gray; font-size: .9rem;">
+        <div style="color: var(--text-secondary); font-size: .9rem;">
             พร้อมรับ
         </div>
     </div>
-    <div class="summary-items" style="border-bottom: solid .3rem blue;">
-        <div style="position: absolute; top: .4rem; left: .4rem; color: dimgray">
-            <i class="fa-solid fa-truck-ramp-box" style="color: blue"></i>
+    <div class="summary-items" role="listitem" style="border-bottom: solid .3rem var(--status-pending);">
+        <div style="position: absolute; top: .4rem; left: .4rem; color: var(--text-secondary)">
+            <i class="fa-solid fa-truck-ramp-box" style="color: var(--status-pending)" aria-hidden="true"></i>
         </div>
         <span class="summary-value">5</span>
-        <div style="color: gray; font-size: .9rem;">
+        <div style="color: var(--text-secondary); font-size: .9rem;">
             รอรับ
         </div>
     </div>
-    <div class="summary-items" style="border-bottom: solid .3rem #FF8A65;">
-        <div style="position: absolute; top: .4rem; left: .4rem; color: dimgray">
-            <i class="fa-solid fa-boxes-stacked" style="color: #FF8A65"></i>
+    <div class="summary-items" role="listitem" style="border-bottom: solid .3rem var(--status-total);">
+        <div style="position: absolute; top: .4rem; left: .4rem; color: var(--text-secondary)">
+            <i class="fa-solid fa-boxes-stacked" style="color: var(--status-total)" aria-hidden="true"></i>
         </div>
         <span class="summary-value">24</span>
-        <div style="color: gray; font-size: .9rem;">
+        <div style="color: var(--text-secondary); font-size: .9rem;">
             ทั้งหมด
         </div>
     </div>
 </div>
 
-<div style="padding-bottom: .6rem; color: #B2E2E2; font-size: .8rem; margin-top: 1rem;">List</div>
-<div style="max-width: 480px">
+<div class="page-label" style="margin-top: 1rem;">List</div>
+<div role="list" aria-label="รายการพัสดุ" style="max-width: 480px">
     <PacelListItem State="Ready" ReceiveDate="new DateTime(2026,11,22)" ParcelNumber="11000001213"
                    Provider="Flash Express"/>
     <PacelListItem State="Pending" ReceiveDate="new DateTime(2026,11,12)" ParcelNumber="11000001291"
