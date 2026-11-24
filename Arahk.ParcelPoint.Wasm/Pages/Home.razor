@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager Navigation
+@using Arahk.ParcelPoint.Wasm.Models
 
 <PageTitle>Home</PageTitle>
 
@@ -45,18 +46,78 @@
 </div>
 
 <div class="page-label" style="margin-top: 1rem;">List</div>
-<div role="list" aria-label="รายการพัสดุ" style="max-width: 480px">
-    <PacelListItem State="Ready" ReceiveDate="new DateTime(2026,11,22)" ParcelNumber="11000001213"
-                   Provider="Flash Express"/>
-    <PacelListItem State="Pending" ReceiveDate="new DateTime(2026,11,12)" ParcelNumber="11000001291"
-                   Provider="Kerry Express"/>
-    <PacelListItem State="Ready" ReceiveDate="new DateTime(2026,11,10)" ParcelNumber="11000001288"
-                   Provider="Kerry Express"/>
-    <PacelListItem State="Pending" ReceiveDate="new DateTime(2026,11,10)" ParcelNumber="11000001287"
-                   Provider="Kerry Express"/>
+<div class="parcel-controls">
+    <input class="parcel-search" type="search" @bind="Search"
+           placeholder="ค้นหาเลขพัสดุ / บริษัทขนส่ง" aria-label="ค้นหาพัสดุ" />
+    <div class="parcel-filter" role="group" aria-label="กรองตามสถานะ">
+        <button type="button" class="parcel-chip @FilterClass("All")" @onclick='() => SetFilter("All")'>ทั้งหมด</button>
+        <button type="button" class="parcel-chip @FilterClass("Ready")" @onclick='() => SetFilter("Ready")'>พร้อมรับ</button>
+        <button type="button" class="parcel-chip @FilterClass("Pending")" @onclick='() => SetFilter("Pending")'>รอรับ</button>
+    </div>
+</div>
+<div role="list" aria-label="รายการพัสดุ" class="parcel-list">
+    @if (VisibleParcels.Count == 0)
+    {
+        <div class="parcel-empty" role="status">
+            <i class="fa-solid fa-box-open" aria-hidden="true"></i>
+            ไม่พบพัสดุที่ตรงกับเงื่อนไข
+        </div>
+    }
+    else
+    {
+        @foreach (var parcel in VisibleParcels)
+        {
+            <div key="@parcel.ParcelNumber">
+                <PacelListItem State="@parcel.State" ReceiveDate="@parcel.ReceiveDate"
+                                ParcelNumber="@parcel.ParcelNumber" Provider="@parcel.Provider" />
+            </div>
+        }
+    }
 </div>
 
 <button type="button" class="fab-add" aria-label="เพิ่มพัสดุ"
         @onclick='() => Navigation.NavigateTo("/admin/add-parcel")'>
     <i class="fa-solid fa-plus"></i>
 </button>
+
+@code {
+    private record ParcelItem(string State, DateTime ReceiveDate, string ParcelNumber, string Provider);
+
+    private List<ParcelItem> Parcels { get; } =
+    [
+        new(ParcelStatuses.Ready, new DateTime(2026, 11, 22), "11000001213", "Flash Express"),
+        new(ParcelStatuses.Pending, new DateTime(2026, 11, 12), "11000001291", "Kerry Express"),
+        new(ParcelStatuses.Ready, new DateTime(2026, 11, 10), "11000001288", "Kerry Express"),
+        new(ParcelStatuses.Pending, new DateTime(2026, 11, 10), "11000001287", "Kerry Express")
+    ];
+
+    private string? Search;
+    private string Filter { get; set; } = "All";
+
+    private List<ParcelItem> VisibleParcels
+    {
+        get
+        {
+            IEnumerable<ParcelItem> query = Parcels.AsEnumerable();
+            if (Filter != "All")
+            {
+                var status = Filter;
+                query = query.Where(p => p.State == status);
+            }
+
+            var term = Search?.Trim();
+            if (!string.IsNullOrEmpty(term))
+            {
+                query = query.Where(p =>
+                    p.ParcelNumber.Contains(term, StringComparison.OrdinalIgnoreCase)
+                    || p.Provider.Contains(term, StringComparison.OrdinalIgnoreCase));
+            }
+
+            return query.ToList();
+        }
+    }
+
+    private void SetFilter(string value) => Filter = value;
+
+    private string? FilterClass(string value) => Filter == value ? "parcel-chip-active" : null;
+}

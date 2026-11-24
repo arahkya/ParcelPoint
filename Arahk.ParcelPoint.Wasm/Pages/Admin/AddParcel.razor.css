@@ -1,0 +1,229 @@
+.add-parcel-page {
+    max-width: 480px;
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    margin-bottom: 1rem;
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.page-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: .8rem;
+}
+
+.banner {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .7rem 1rem;
+    border-radius: .4rem;
+    font-size: .9rem;
+    margin-bottom: 1rem;
+}
+
+.banner-success {
+    background-color: var(--status-ready-soft);
+    color: var(--status-ready);
+    border: 1px solid color-mix(in srgb, var(--status-ready) 35%, white);
+}
+
+.banner-error {
+    background-color: var(--status-error-soft);
+    color: var(--status-error);
+    border: 1px solid color-mix(in srgb, var(--status-error) 35%, white);
+}
+
+.section-card {
+    background-color: white;
+    border-radius: .4rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    color: var(--brand-600);
+    margin-bottom: .9rem;
+    padding-bottom: .5rem;
+    border-bottom: 1px solid #e8f4f2;
+}
+
+.field {
+    margin-bottom: .8rem;
+}
+
+.field:last-child {
+    margin-bottom: 0;
+}
+
+.field-label {
+    font-size: .8rem;
+    color: var(--text-secondary);
+    margin-bottom: .3rem;
+}
+
+.required {
+    color: var(--status-error);
+    margin-left: .2rem;
+}
+
+.field-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: .55rem .7rem;
+    border: 1px solid #d8d8d8;
+    border-radius: .3rem;
+    font-size: .95rem;
+    font-family: inherit;
+    color: var(--text-primary);
+    background-color: white;
+}
+
+.field-input:focus {
+    outline: none;
+    border-color: var(--brand-600);
+}
+
+.field-input.mono {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.field-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+}
+
+.field-input-invalid {
+    border-color: var(--status-error);
+    background-color: var(--status-error-soft);
+}
+
+.field-error,
+.field-warning,
+.field-hint {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .78rem;
+    margin-top: .35rem;
+}
+
+.field-error {
+    color: var(--status-error);
+}
+
+.field-warning {
+    color: var(--status-pending);
+}
+
+.field-hint {
+    color: var(--text-secondary);
+}
+
+.status-toggle {
+    display: flex;
+    gap: .5rem;
+}
+
+.status-option {
+    flex: 1;
+    padding: .55rem 0;
+    border: 1px solid #d8d8d8;
+    border-radius: .3rem;
+    background-color: white;
+    color: var(--text-secondary);
+    font-size: .9rem;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.status-option-active-ready {
+    background-color: var(--status-ready-soft);
+    border-color: var(--status-ready);
+    color: var(--status-ready);
+    font-weight: 700;
+}
+
+.status-option-active-pending {
+    background-color: var(--status-pending-soft);
+    border-color: var(--status-pending);
+    color: var(--status-pending);
+    font-weight: 700;
+}
+
+/* Sticky above the bottom nav (nav is ~3.8rem tall, z-index 2; bar sits below it). */
+.action-bar {
+    position: sticky;
+    bottom: 4rem;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    background-color: white;
+    border-radius: .4rem;
+    padding: 1rem;
+    margin-top: .4rem;
+    box-shadow: 0 -2px 10px rgba(15, 23, 23, .12);
+}
+
+.btn {
+    border-radius: .45rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.08rem;
+    letter-spacing: .3px;
+    color: var(--on-brand);
+    background-color: var(--brand-600);
+    background-image: var(--brand-gradient);
+    box-shadow: 0 2px 6px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .25);
+    transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.06);
+}
+
+.btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 2px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: .6rem 1rem;
+    background-color: transparent;
+    color: var(--brand-700);
+    font-size: .92rem;
+    font-weight: 600;
+    transition: background-color .15s ease;
+}
+
+.btn-secondary:hover {
+    background-color: color-mix(in srgb, var(--brand-700) 8%, transparent);
+}

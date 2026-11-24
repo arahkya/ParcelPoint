@@ -2,210 +2,11 @@
 @layout MainLayout
 @implements IDisposable
 @using Arahk.ParcelPoint.Wasm.Models
+@using System.Globalization
 
 <PageTitle>เพิ่มพัสดุ</PageTitle>
 
-<style>
-    #add-parcel-page {
-        max-width: 480px;
-    }
-
-    .page-header {
-        display: flex;
-        flex-direction: column;
-        gap: .25rem;
-        margin-bottom: 1rem;
-    }
-
-    .page-title {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        color: white;
-        font-size: 1.3rem;
-        font-weight: 700;
-    }
-
-    .page-subtitle {
-        color: rgba(255, 255, 255, 0.85);
-        font-size: .8rem;
-    }
-
-    .banner {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        padding: .7rem 1rem;
-        border-radius: .4rem;
-        font-size: .9rem;
-        margin-bottom: 1rem;
-    }
-
-    .banner-success {
-        background-color: var(--status-ready-soft);
-        color: var(--status-ready);
-        border: 1px solid color-mix(in srgb, var(--status-ready) 35%, white);
-    }
-
-    .banner-error {
-        background-color: var(--status-error-soft);
-        color: var(--status-error);
-        border: 1px solid color-mix(in srgb, var(--status-error) 35%, white);
-    }
-
-    .section-card {
-        background-color: white;
-        border-radius: .4rem;
-        padding: 1rem;
-        margin-bottom: 1rem;
-    }
-
-    .section-header {
-        display: flex;
-        align-items: center;
-        gap: .5rem;
-        font-size: .85rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: .4px;
-        color: var(--brand-600);
-        margin-bottom: .9rem;
-        padding-bottom: .5rem;
-        border-bottom: 1px solid #e8f4f2;
-    }
-
-    .field {
-        margin-bottom: .8rem;
-    }
-
-    .field:last-child {
-        margin-bottom: 0;
-    }
-
-    .field-label {
-        font-size: .8rem;
-        color: var(--text-secondary);
-        margin-bottom: .3rem;
-    }
-
-    .required {
-        color: var(--status-error);
-        margin-left: .2rem;
-    }
-
-    .field-input {
-        width: 100%;
-        box-sizing: border-box;
-        padding: .55rem .7rem;
-        border: 1px solid #d8d8d8;
-        border-radius: .3rem;
-        font-size: .95rem;
-        font-family: inherit;
-        color: var(--text-primary);
-        background-color: white;
-    }
-
-    .field-input:focus {
-        outline: none;
-        border-color: var(--brand-600);
-    }
-
-    .field-input.mono {
-        font-family: 'Courier New', Courier, monospace;
-    }
-
-    .field-row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: .8rem;
-    }
-
-    .status-toggle {
-        display: flex;
-        gap: .5rem;
-    }
-
-    .status-option {
-        flex: 1;
-        padding: .55rem 0;
-        border: 1px solid #d8d8d8;
-        border-radius: .3rem;
-        background-color: white;
-        color: var(--text-secondary);
-        font-size: .9rem;
-        cursor: pointer;
-        transition: background-color .15s ease, border-color .15s ease, color .15s ease;
-    }
-
-    .status-option-active-ready {
-        background-color: var(--status-ready-soft);
-        border-color: var(--status-ready);
-        color: var(--status-ready);
-        font-weight: 700;
-    }
-
-    .status-option-active-pending {
-        background-color: var(--status-pending-soft);
-        border-color: var(--status-pending);
-        color: var(--status-pending);
-        font-weight: 700;
-    }
-
-    .action-bar {
-        display: flex;
-        flex-direction: column;
-        gap: .55rem;
-        background-color: white;
-        border-radius: .4rem;
-        padding: 1rem;
-        margin-top: .4rem;
-    }
-
-    .btn {
-        border-radius: .45rem;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        border: none;
-    }
-
-    .btn-primary {
-        width: 100%;
-        padding: 1rem;
-        font-size: 1.08rem;
-        letter-spacing: .3px;
-        color: var(--on-brand);
-        background-color: var(--brand-600);
-        background-image: var(--brand-gradient);
-        box-shadow: 0 2px 6px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .25);
-        transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
-    }
-
-    .btn-primary:hover {
-        filter: brightness(1.06);
-    }
-
-    .btn-primary:active {
-        transform: translateY(2px);
-        box-shadow: 0 1px 2px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .2);
-    }
-
-    .btn-secondary {
-        width: 100%;
-        padding: .6rem 1rem;
-        background-color: transparent;
-        color: var(--brand-700);
-        font-size: .92rem;
-        font-weight: 600;
-        transition: background-color .15s ease;
-    }
-
-    .btn-secondary:hover {
-        background-color: color-mix(in srgb, var(--brand-700) 8%, transparent);
-    }
-</style>
-
-<div id="add-parcel-page">
+<div class="add-parcel-page">
     <div class="page-header">
         <div class="page-title"><i class="fa-solid fa-box-plus"></i> เพิ่มพัสดุ</div>
         <div class="page-subtitle">บันทึกพัสดุที่รับมาจากบริษัทขนส่ง</div>
@@ -219,14 +20,6 @@
         </div>
     }
 
-    @if (_errorMessage != null)
-    {
-        <div class="banner banner-error">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            @_errorMessage
-        </div>
-    }
-
     <form onsubmit="event.preventDefault(); return false;">
         <!-- พัสดุ -->
         <div class="section-card">
@@ -234,7 +27,16 @@
 
             <div class="field">
                 <div class="field-label">เลขที่พัสดุ<span class="required">*</span></div>
-                <input class="field-input mono" @bind="Model.ParcelNumber" placeholder="เช่น 11000001213" />
+                <input class="field-input mono @(ParcelNumberInvalid ? "field-input-invalid" : null)"
+                       @bind="Model.ParcelNumber" placeholder="เช่น 11000001213" />
+                @if (ParcelNumberInvalid)
+                {
+                    <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกเลขที่พัสดุ</div>
+                }
+                else if (DuplicateWarning != null)
+                {
+                    <div class="field-warning"><i class="fa-solid fa-circle-info"></i> @DuplicateWarning</div>
+                }
             </div>
 
             <div class="field">
@@ -277,7 +79,9 @@
 
             <div class="field">
                 <div class="field-label">เบอร์โทรผู้ส่ง</div>
-                <input class="field-input" @bind="Model.SenderPhone" placeholder="08x-xxx-xxxx" />
+                <input class="field-input" value="@Model.SenderPhone"
+                       @onchange="e => Model.SenderPhone = FormatThaiPhone(e.Value?.ToString())"
+                       inputmode="numeric" placeholder="08x-xxx-xxxx" />
             </div>
         </div>
 
@@ -287,17 +91,29 @@
 
             <div class="field">
                 <div class="field-label">ชื่อผู้รับ<span class="required">*</span></div>
-                <input class="field-input" @bind="Model.ReceiverName" placeholder="ชื่อลูกบ้าน" />
+                <input class="field-input @(ReceiverNameInvalid ? "field-input-invalid" : null)"
+                       @bind="Model.ReceiverName" placeholder="ชื่อลูกบ้าน" />
+                @if (ReceiverNameInvalid)
+                {
+                    <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกชื่อผู้รับ</div>
+                }
             </div>
 
             <div class="field-row-2">
                 <div class="field">
                     <div class="field-label">ห้อง / ยูนิต<span class="required">*</span></div>
-                    <input class="field-input" @bind="Model.ReceiverUnit" placeholder="เช่น 89/86-1203" />
+                    <input class="field-input @(ReceiverUnitInvalid ? "field-input-invalid" : null)"
+                           @bind="Model.ReceiverUnit" placeholder="เช่น 89/86-1203" />
+                    @if (ReceiverUnitInvalid)
+                    {
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกห้อง/ยูนิต</div>
+                    }
                 </div>
                 <div class="field">
                     <div class="field-label">เบอร์โทรผู้รับ</div>
-                    <input class="field-input" @bind="Model.ReceiverPhone" placeholder="08x-xxx-xxxx" />
+                    <input class="field-input" value="@Model.ReceiverPhone"
+                           @onchange="e => Model.ReceiverPhone = FormatThaiPhone(e.Value?.ToString())"
+                           inputmode="numeric" placeholder="08x-xxx-xxxx" />
                 </div>
             </div>
         </div>
@@ -309,6 +125,9 @@
             <div class="field">
                 <div class="field-label">วันที่รับพัสดุ<span class="required">*</span></div>
                 <input type="date" class="field-input" @bind="Model.ReceivedDate" />
+                <div class="field-hint">
+                    <i class="fa-regular fa-calendar"></i> บันทึกวันนี้: @TodayHint
+                </div>
             </div>
         </div>
 
@@ -337,8 +156,25 @@
     private Parcel Model { get; set; } = new();
 
     private bool _showSuccess;
-    private string? _errorMessage;
+    private bool _validated;
     private CancellationTokenSource? _successTimeoutCts;
+
+    // Tracking numbers already registered in the system (sample data).
+    private static readonly string[] RegisteredTrackingNumbers =
+    [
+        "11000001213", "11000001291", "11000001288", "11000001287"
+    ];
+
+    private string TodayHint => DateTime.Today.ToString("D", new CultureInfo("th-TH"));
+
+    private bool ParcelNumberInvalid => _validated && string.IsNullOrWhiteSpace(Model.ParcelNumber);
+    private bool ReceiverNameInvalid => _validated && string.IsNullOrWhiteSpace(Model.ReceiverName);
+    private bool ReceiverUnitInvalid => _validated && string.IsNullOrWhiteSpace(Model.ReceiverUnit);
+
+    private string? DuplicateWarning =>
+        string.IsNullOrWhiteSpace(Model.ParcelNumber) || !RegisteredTrackingNumbers.Contains(Model.ParcelNumber.Trim())
+            ? null
+            : $"เลขที่พัสดุนี้มีพัสดุลงทะเบียนอยู่แล้ว (ข้อมูลตัวอย่าง) — สามารถบันทึกรายการนี้ได้";
 
     private string StatusClass(string status)
     {
@@ -354,18 +190,34 @@
 
     private void SetStatus(string status) => Model.Status = status;
 
+    // Formats Thai mobile numbers while typing: keeps digits only, groups as 08x-xxx-xxxx.
+    private static string FormatThaiPhone(string? value)
+    {
+        var digits = string.Concat((value ?? string.Empty).Where(char.IsDigit));
+        if (digits.Length is <= 3)
+        {
+            return digits;
+        }
+
+        if (digits.Length is <= 7)
+        {
+            return $"{digits[..3]}-{digits[3..]}";
+        }
+
+        return $"{digits[..3]}-{digits[3..7]}-{digits[7..]}";
+    }
+
     private async Task SaveAsync()
     {
+        _validated = true;
         if (string.IsNullOrWhiteSpace(Model.ParcelNumber)
             || string.IsNullOrWhiteSpace(Model.ReceiverName)
             || string.IsNullOrWhiteSpace(Model.ReceiverUnit))
         {
-            _errorMessage = "กรุณากรอกเลขที่พัสดุ ชื่อผู้รับ และห้อง/ยูนิตให้ครบถ้วน";
             _showSuccess = false;
             return;
         }
 
-        _errorMessage = null;
         _showSuccess = true;
         ResetForm();
 
@@ -390,7 +242,11 @@
         }
     }
 
-    private void ResetForm() => Model = new Parcel { ReceivedDate = DateTime.Today };
+    private void ResetForm()
+    {
+        Model = new Parcel { ReceivedDate = DateTime.Today };
+        _validated = false;
+    }
 
     public void Dispose()
     {
