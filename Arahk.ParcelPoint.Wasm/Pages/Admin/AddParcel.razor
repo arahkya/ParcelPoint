@@ -1,0 +1,401 @@
+@page "/admin/add-parcel"
+@layout MainLayout
+@implements IDisposable
+@using Arahk.ParcelPoint.Wasm.Models
+
+<PageTitle>เพิ่มพัสดุ</PageTitle>
+
+<style>
+    #add-parcel-page {
+        max-width: 480px;
+    }
+
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: .25rem;
+        margin-bottom: 1rem;
+    }
+
+    .page-title {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        color: white;
+        font-size: 1.3rem;
+        font-weight: 700;
+    }
+
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: .8rem;
+    }
+
+    .banner {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .7rem 1rem;
+        border-radius: .4rem;
+        font-size: .9rem;
+        margin-bottom: 1rem;
+    }
+
+    .banner-success {
+        background-color: #e6f7ea;
+        color: #1e7e34;
+        border: 1px solid #b7e4c7;
+    }
+
+    .banner-error {
+        background-color: #fdecec;
+        color: #c0392b;
+        border: 1px solid #f5c6c6;
+    }
+
+    .section-card {
+        background-color: white;
+        border-radius: .4rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        font-size: .85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        color: #00A896;
+        margin-bottom: .9rem;
+        padding-bottom: .5rem;
+        border-bottom: 1px solid #e8f4f2;
+    }
+
+    .field {
+        margin-bottom: .8rem;
+    }
+
+    .field:last-child {
+        margin-bottom: 0;
+    }
+
+    .field-label {
+        font-size: .8rem;
+        color: dimgray;
+        margin-bottom: .3rem;
+    }
+
+    .required {
+        color: #e74c3c;
+        margin-left: .2rem;
+    }
+
+    .field-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: .55rem .7rem;
+        border: 1px solid #d8d8d8;
+        border-radius: .3rem;
+        font-size: .95rem;
+        font-family: inherit;
+        color: #1a1a1a;
+        background-color: white;
+    }
+
+    .field-input:focus {
+        outline: none;
+        border-color: #00A896;
+    }
+
+    .field-input.mono {
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    .field-row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .8rem;
+    }
+
+    .status-toggle {
+        display: flex;
+        gap: .5rem;
+    }
+
+    .status-option {
+        flex: 1;
+        padding: .55rem 0;
+        border: 1px solid #d8d8d8;
+        border-radius: .3rem;
+        background-color: white;
+        color: dimgray;
+        font-size: .9rem;
+        cursor: pointer;
+        transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+    }
+
+    .status-option-active-ready {
+        background-color: #e6f7ea;
+        border-color: green;
+        color: green;
+        font-weight: 700;
+    }
+
+    .status-option-active-pending {
+        background-color: #eef4fc;
+        border-color: #4a90e2;
+        color: #4a90e2;
+        font-weight: 700;
+    }
+
+    .action-bar {
+        display: flex;
+        flex-direction: column;
+        gap: .55rem;
+        background-color: white;
+        border-radius: .4rem;
+        padding: 1rem;
+        margin-top: .4rem;
+    }
+
+    .btn {
+        border-radius: .45rem;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-primary {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.08rem;
+        letter-spacing: .3px;
+        color: white;
+        background-color: #00A896;
+        background-image: linear-gradient(180deg, #00BFA5 0%, #00A896 45%, #008080 100%);
+        box-shadow: 0 2px 6px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .25);
+        transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+    }
+
+    .btn-primary:hover {
+        filter: brightness(1.06);
+    }
+
+    .btn-primary:active {
+        transform: translateY(2px);
+        box-shadow: 0 1px 2px rgba(0, 128, 128, .4), inset 0 1px 0 rgba(255, 255, 255, .2);
+    }
+
+    .btn-secondary {
+        width: 100%;
+        padding: .6rem 1rem;
+        background-color: transparent;
+        color: #008080;
+        font-size: .92rem;
+        font-weight: 600;
+        transition: background-color .15s ease;
+    }
+
+    .btn-secondary:hover {
+        background-color: rgba(0, 128, 128, .08);
+    }
+</style>
+
+<div id="add-parcel-page">
+    <div class="page-header">
+        <div class="page-title"><i class="fa-solid fa-box-plus"></i> เพิ่มพัสดุ</div>
+        <div class="page-subtitle">บันทึกพัสดุที่รับมาจากบริษัทขนส่ง</div>
+    </div>
+
+    @if (_showSuccess)
+    {
+        <div class="banner banner-success">
+            <i class="fa-solid fa-circle-check"></i>
+            บันทึกเรียบร้อยแล้ว
+        </div>
+    }
+
+    @if (_errorMessage != null)
+    {
+        <div class="banner banner-error">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            @_errorMessage
+        </div>
+    }
+
+    <form onsubmit="event.preventDefault(); return false;">
+        <!-- พัสดุ -->
+        <div class="section-card">
+            <div class="section-header"><i class="fa-solid fa-box"></i> พัสดุ</div>
+
+            <div class="field">
+                <div class="field-label">เลขที่พัสดุ<span class="required">*</span></div>
+                <input class="field-input mono" @bind="Model.ParcelNumber" placeholder="เช่น 11000001213" />
+            </div>
+
+            <div class="field">
+                <div class="field-label">บริษัทขนส่ง</div>
+                <select class="field-input" @bind="Model.Provider">
+                    <option value="">-- เลือกบริษัทขนส่ง --</option>
+                    <option value="Kerry Express">Kerry Express</option>
+                    <option value="Flash Express">Flash Express</option>
+                    <option value="J&amp;T Express">J&amp;T Express</option>
+                    <option value="SF Express">SF Express</option>
+                    <option value="GPB Express">GPB Express</option>
+                    <option value="Thai Post">ไปรษณีย์ไทย (Thai Post)</option>
+                    <option value="Other">อื่น ๆ</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <div class="field-label">สถานะ</div>
+                <div class="status-toggle">
+                    <button type="button" class="status-option @StatusClass(ParcelStatuses.Ready)"
+                            @onclick="() => SetStatus(ParcelStatuses.Ready)">
+                        <i class="fa-solid fa-qrcode"></i> พร้อมรับ
+                    </button>
+                    <button type="button" class="status-option @StatusClass(ParcelStatuses.Pending)"
+                            @onclick="() => SetStatus(ParcelStatuses.Pending)">
+                        <i class="fa-solid fa-truck-ramp-box"></i> รอพรับ
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ผู้ส่ง -->
+        <div class="section-card">
+            <div class="section-header"><i class="fa-solid fa-user"></i> ผู้ส่ง</div>
+
+            <div class="field">
+                <div class="field-label">ชื่อผู้ส่ง</div>
+                <input class="field-input" @bind="Model.SenderName" placeholder="ชื่อร้านค้า / ผู้ส่ง" />
+            </div>
+
+            <div class="field">
+                <div class="field-label">เบอร์โทรผู้ส่ง</div>
+                <input class="field-input" @bind="Model.SenderPhone" placeholder="08x-xxx-xxxx" />
+            </div>
+        </div>
+
+        <!-- ผู้รับ -->
+        <div class="section-card">
+            <div class="section-header"><i class="fa-solid fa-user-check"></i> ผู้รับ</div>
+
+            <div class="field">
+                <div class="field-label">ชื่อผู้รับ<span class="required">*</span></div>
+                <input class="field-input" @bind="Model.ReceiverName" placeholder="ชื่อลูกบ้าน" />
+            </div>
+
+            <div class="field-row-2">
+                <div class="field">
+                    <div class="field-label">ห้อง / ยูนิต<span class="required">*</span></div>
+                    <input class="field-input" @bind="Model.ReceiverUnit" placeholder="เช่น 89/86-1203" />
+                </div>
+                <div class="field">
+                    <div class="field-label">เบอร์โทรผู้รับ</div>
+                    <input class="field-input" @bind="Model.ReceiverPhone" placeholder="08x-xxx-xxxx" />
+                </div>
+            </div>
+        </div>
+
+        <!-- วันที่ -->
+        <div class="section-card">
+            <div class="section-header"><i class="fa-solid fa-calendar-check"></i> วันที่</div>
+
+            <div class="field">
+                <div class="field-label">วันที่รับพัสดุ<span class="required">*</span></div>
+                <input type="date" class="field-input" @bind="Model.ReceivedDate" />
+            </div>
+        </div>
+
+        <!-- หมายเหตุ -->
+        <div class="section-card">
+            <div class="section-header"><i class="fa-solid fa-note-sticky"></i> หมายเหตุ</div>
+
+            <div class="field">
+                <textarea class="field-input" rows="3" @bind="Model.Notes"
+                          placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <button class="btn btn-primary" @onclick="SaveAsync">
+                <i class="fa-solid fa-floppy-disk"></i>&nbsp; บันทึกรายการ
+            </button>
+            <button class="btn btn-secondary" @onclick="ResetForm">
+                <i class="fa-solid fa-eraser"></i>&nbsp; ล้างข้อมูล
+            </button>
+        </div>
+    </form>
+</div>
+
+@code {
+    private Parcel Model { get; set; } = new();
+
+    private bool _showSuccess;
+    private string? _errorMessage;
+    private CancellationTokenSource? _successTimeoutCts;
+
+    private string StatusClass(string status)
+    {
+        if (Model.Status != status)
+        {
+            return string.Empty;
+        }
+
+        return status == ParcelStatuses.Ready
+            ? "status-option-active-ready"
+            : "status-option-active-pending";
+    }
+
+    private void SetStatus(string status) => Model.Status = status;
+
+    private async Task SaveAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Model.ParcelNumber)
+            || string.IsNullOrWhiteSpace(Model.ReceiverName)
+            || string.IsNullOrWhiteSpace(Model.ReceiverUnit))
+        {
+            _errorMessage = "กรุณากรอกเลขที่พัสดุ ชื่อผู้รับ และห้อง/ยูนิตให้ครบถ้วน";
+            _showSuccess = false;
+            return;
+        }
+
+        _errorMessage = null;
+        _showSuccess = true;
+        ResetForm();
+
+        // Auto-dismiss the success banner; a new save (or disposal) cancels it.
+        _successTimeoutCts?.Cancel();
+        _successTimeoutCts = new CancellationTokenSource();
+        var token = _successTimeoutCts.Token;
+
+        try
+        {
+            await Task.Delay(3500, token);
+        }
+        catch (TaskCanceledException)
+        {
+            // Cancelled by a newer save (or disposal) — leave state untouched.
+            return;
+        }
+
+        if (_showSuccess)
+        {
+            _showSuccess = false;
+        }
+    }
+
+    private void ResetForm() => Model = new Parcel { ReceivedDate = DateTime.Today };
+
+    public void Dispose()
+    {
+        // Cancels any pending success-timeout so it cannot touch state after unmount.
+        _successTimeoutCts?.Cancel();
+        _successTimeoutCts?.Dispose();
+    }
+}

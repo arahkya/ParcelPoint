@@ -46,6 +46,49 @@
         right: -1.3rem;
     }
 
+    #drawer-header {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: 1.1rem 1rem;
+        font-size: .95rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        color: #00A896;
+        border-bottom: 1px solid #e8e8e8;
+    }
+
+    #drawer-nav {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+        padding: .8rem;
+    }
+
+    .drawer-link {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+        padding: .8rem 1rem;
+        border-radius: .5rem;
+        color: #333;
+        text-decoration: none;
+        font-size: 1rem;
+        transition: background-color .15s ease, color .15s ease;
+    }
+
+    .drawer-link i {
+        width: 1.5rem;
+        text-align: center;
+        color: #00A896;
+    }
+
+    .drawer-link:hover {
+        background-color: #e8f5f3;
+        color: #008080;
+    }
+
     @@keyframes fadeIn {
         from {
             opacity: 0;            
@@ -92,13 +135,28 @@
 
 <div id="backdrop" class="@(Toggle ? "show" : "close")" @onclick="TapBackdrop"></div>
 <div id="container" class="@(Toggle ? "container-show" : "container-close")">
-    Hello World
+    <div id="drawer-header">
+        <i class="fa-solid fa-bars-staggered"></i>
+        เมนู
+    </div>
+    <nav id="drawer-nav">
+        <a href="/" class="drawer-link" @onclick:preventDefault @onclick='() => NavigateAndCloseAsync("/")'>
+            <i class="fa-solid fa-house"></i>
+            หน้าแรก
+        </a>
+        <a href="/admin/add-parcel" class="drawer-link" @onclick:preventDefault @onclick='() => NavigateAndCloseAsync("/admin/add-parcel")'>
+            <i class="fa-solid fa-box-plus"></i>
+            เพิ่มพัสดุ
+        </a>
+    </nav>
     <div id="CloseButton" @onclick="TapBackdrop">
         <i class="fa-solid fa-circle-arrow-left" style="font-size: 2rem;"></i>
     </div>
 </div>
 
 @code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
     [Parameter] public bool Toggle { get; set; }
 
     [Parameter] public EventCallback<bool> IsToggleChanged { get; set; }
@@ -108,6 +166,14 @@
         Toggle = false;
 
         await IsToggleChanged.InvokeAsync(Toggle);
+    }
+
+    private async Task NavigateAndCloseAsync(string url)
+    {
+        Toggle = false;
+
+        await IsToggleChanged.InvokeAsync(Toggle);
+        Navigation.NavigateTo(url);
     }
 
 }
