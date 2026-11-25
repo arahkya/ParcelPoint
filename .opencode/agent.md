@@ -35,5 +35,11 @@ Please adhere to these rules strictly:
 - Be proactive: If a requirement is ambiguous, ask clarifying questions before starting.
 - Provide examples: When introducing a new concept or method, provide a brief usage example.
 
+## 6. Local Serve / Review Workflow
+When asked to "run for review", "serve the app", or similar:
+- Run `./scripts/serve-lan.sh start` from the repo root and report the printed URL (typically `http://<local-ip>:5030`).
+- `./scripts/serve-lan.sh stop` stops the server and removes the temporary `ufw` rule; `./scripts/serve-lan.sh clean` additionally removes the ephemeral SDK, logs, and build output.
+- The script installs the .NET 11 SDK under `/tmp/dotnet11` if missing, serves on `0.0.0.0:$PORT` (default 5030, override with `PORT=`), and keeps all artifacts under `/tmp/parcelpoint-*`.
+
 ## Available Skills (Reference .opencode/skills/)
 - **Frontend Design**: Use `.opencode/skills/frontend-design/SKILL.md` for intentional UI, typography, and color patterns.
