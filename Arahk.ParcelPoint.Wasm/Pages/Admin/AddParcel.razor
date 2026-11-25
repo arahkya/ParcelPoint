@@ -25,11 +25,12 @@
     <ol class="step-indicator" aria-label="ขั้นตอนการเพิ่มพัสดุ">
         @for (var s = 1; s <= 3; s++)
         {
+            var step = s;
             <li class="step-item @(s == _step ? "step-active" : null) @(s < _step ? "step-done" : null)">
                 <button type="button"
                         class="step-dot"
                         disabled="@(s >= _step)"
-                        @onclick="() => GoToStep(s)"
+                        @onclick="() => GoToStep(step)"
                         aria-label="@($"ขั้นตอน {s}: {StepName(s)}")"
                         aria-current="@(s == _step ? "step" : (bool?)null)">
                     @if (s < _step)
