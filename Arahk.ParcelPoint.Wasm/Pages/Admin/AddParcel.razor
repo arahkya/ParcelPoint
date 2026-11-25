@@ -22,146 +22,194 @@
         </div>
     }
 
-    <form onsubmit="event.preventDefault(); return false;">
-        <!-- พัสดุ -->
-        <div class="section-card parcel-card">
-            <div class="section-header">
-                <span class="section-icon"><i class="fa-solid fa-box" aria-hidden="true"></i></span>
-                <span>พัสดุ</span>
-            </div>
-
-            <div class="field">
-                <div class="field-label">เลขที่พัสดุ<span class="required">*</span></div>
-                <input class="field-input tracking-input @(ParcelNumberInvalid ? "field-input-invalid" : null)"
-                       @bind="Model.ParcelNumber" @bind:event="oninput"
-                       placeholder="เช่น 11000001213" />
-                <div class="tracking-reveal @(string.IsNullOrWhiteSpace(Model.ParcelNumber) ? null : "is-on")">
-                    <div class="tracking-label">
-                        <div class="barcode" aria-hidden="true"></div>
-                        <div class="tracking-echo">@Model.ParcelNumber</div>
-                    </div>
-                </div>
-                @if (ParcelNumberInvalid)
-                {
-                    <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกเลขที่พัสดุ</div>
-                }
-                else if (DuplicateWarning != null)
-                {
-                    <div class="field-warning"><i class="fa-solid fa-circle-info"></i> @DuplicateWarning</div>
-                }
-            </div>
-
-            <div class="field">
-                <div class="field-label">บริษัทขนส่ง</div>
-                <select class="field-input" @bind="Model.Provider">
-                    <option value="">-- เลือกบริษัทขนส่ง --</option>
-                    <option value="Kerry Express">Kerry Express</option>
-                    <option value="Flash Express">Flash Express</option>
-                    <option value="J&amp;T Express">J&amp;T Express</option>
-                    <option value="SF Express">SF Express</option>
-                    <option value="GPB Express">GPB Express</option>
-                    <option value="Thai Post">ไปรษณีย์ไทย (Thai Post)</option>
-                    <option value="Other">อื่น ๆ</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <div class="field-label">สถานะ</div>
-                <div class="status-toggle">
-                    <button type="button" class="status-option @StatusClass(ParcelStatuses.Ready)"
-                            @onclick="() => SetStatus(ParcelStatuses.Ready)">
-                        <i class="fa-solid fa-qrcode"></i> พร้อมรับ
-                    </button>
-                    <button type="button" class="status-option @StatusClass(ParcelStatuses.Pending)"
-                            @onclick="() => SetStatus(ParcelStatuses.Pending)">
-                        <i class="fa-solid fa-truck-ramp-box"></i> รอพรับ
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ผู้ส่ง -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
-                <span>ผู้ส่ง</span>
-            </div>
-
-            <div class="field">
-                <div class="field-label">ชื่อผู้ส่ง</div>
-                <input class="field-input" @bind="Model.SenderName" placeholder="ชื่อร้านค้า / ผู้ส่ง" />
-            </div>
-
-            <div class="field">
-                <div class="field-label">เบอร์โทรผู้ส่ง</div>
-                <input class="field-input" value="@Model.SenderPhone"
-                       @onchange="e => Model.SenderPhone = FormatThaiPhone(e.Value?.ToString())"
-                       inputmode="numeric" placeholder="08x-xxx-xxxx" />
-            </div>
-        </div>
-
-        <!-- ผู้รับ -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon"><i class="fa-solid fa-user-check" aria-hidden="true"></i></span>
-                <span>ผู้รับ</span>
-            </div>
-
-            <div class="field">
-                <div class="field-label">ชื่อผู้รับ<span class="required">*</span></div>
-                <input class="field-input @(ReceiverNameInvalid ? "field-input-invalid" : null)"
-                       @bind="Model.ReceiverName" placeholder="ชื่อลูกบ้าน" />
-                @if (ReceiverNameInvalid)
-                {
-                    <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกชื่อผู้รับ</div>
-                }
-            </div>
-
-            <div class="field-row-2">
-                <div class="field">
-                    <div class="field-label">ห้อง / ยูนิต<span class="required">*</span></div>
-                    <input class="field-input @(ReceiverUnitInvalid ? "field-input-invalid" : null)"
-                           @bind="Model.ReceiverUnit" placeholder="เช่น 89/86-1203" />
-                    @if (ReceiverUnitInvalid)
+    <ol class="step-indicator" aria-label="ขั้นตอนการเพิ่มพัสดุ">
+        @for (var s = 1; s <= 3; s++)
+        {
+            <li class="step-item @(s == _step ? "step-active" : null) @(s < _step ? "step-done" : null)">
+                <button type="button"
+                        class="step-dot"
+                        disabled="@(s >= _step)"
+                        @onclick="() => GoToStep(s)"
+                        aria-label="@($"ขั้นตอน {s}: {StepName(s)}")"
+                        aria-current="@(s == _step ? "step" : (bool?)null)">
+                    @if (s < _step)
                     {
-                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกห้อง/ยูนิต</div>
+                        <i class="fa-solid fa-check" aria-hidden="true"></i>
+                    }
+                    else
+                    {
+                        @s
+                    }
+                </button>
+                <span class="step-label">@StepName(s)</span>
+            </li>
+        }
+    </ol>
+
+    <form onsubmit="event.preventDefault(); return false;">
+        @if (_step == 1)
+        {
+            <!-- พัสดุ -->
+            <div class="section-card parcel-card step-panel">
+                <div class="section-header">
+                    <span class="section-icon"><i class="fa-solid fa-box" aria-hidden="true"></i></span>
+                    <span>พัสดุ</span>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">เลขที่พัสดุ<span class="required">*</span></div>
+                    <input class="field-input tracking-input @(ParcelNumberInvalid ? "field-input-invalid" : null)"
+                           @bind="Model.ParcelNumber" @bind:event="oninput"
+                           placeholder="เช่น 11000001213" />
+                    <div class="tracking-reveal @(string.IsNullOrWhiteSpace(Model.ParcelNumber) ? null : "is-on")">
+                        <div class="tracking-label">
+                            <div class="barcode" aria-hidden="true"></div>
+                            <div class="tracking-echo">@Model.ParcelNumber</div>
+                        </div>
+                    </div>
+                    @if (ParcelNumberInvalid)
+                    {
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกเลขที่พัสดุ</div>
+                    }
+                    else if (DuplicateWarning != null)
+                    {
+                        <div class="field-warning"><i class="fa-solid fa-circle-info"></i> @DuplicateWarning</div>
                     }
                 </div>
+
                 <div class="field">
-                    <div class="field-label">เบอร์โทรผู้รับ</div>
-                    <input class="field-input" value="@Model.ReceiverPhone"
-                           @onchange="e => Model.ReceiverPhone = FormatThaiPhone(e.Value?.ToString())"
+                    <div class="field-label">บริษัทขนส่ง</div>
+                    <select class="field-input" @bind="Model.Provider">
+                        <option value="">-- เลือกบริษัทขนส่ง --</option>
+                        <option value="Kerry Express">Kerry Express</option>
+                        <option value="Flash Express">Flash Express</option>
+                        <option value="J&amp;T Express">J&amp;T Express</option>
+                        <option value="SF Express">SF Express</option>
+                        <option value="GPB Express">GPB Express</option>
+                        <option value="Thai Post">ไปรษณีย์ไทย (Thai Post)</option>
+                        <option value="Other">อื่น ๆ</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">สถานะ</div>
+                    <div class="status-toggle">
+                        <button type="button" class="status-option @StatusClass(ParcelStatuses.Ready)"
+                                @onclick="() => SetStatus(ParcelStatuses.Ready)">
+                            <i class="fa-solid fa-qrcode"></i> พร้อมรับ
+                        </button>
+                        <button type="button" class="status-option @StatusClass(ParcelStatuses.Pending)"
+                                @onclick="() => SetStatus(ParcelStatuses.Pending)">
+                            <i class="fa-solid fa-truck-ramp-box"></i> รอพรับ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- รายละเอียด -->
+            <div class="section-card step-panel">
+                <div class="section-header">
+                    <span class="section-icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+                    <span>รายละเอียด</span>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">วันที่รับพัสดุ<span class="required">*</span></div>
+                    <input type="date" class="field-input" @bind="Model.ReceivedDate" />
+                    <div class="field-hint">
+                        <i class="fa-regular fa-calendar"></i> บันทึกวันนี้: @TodayHint
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">หมายเหตุ</div>
+                    <textarea class="field-input" rows="3" @bind="Model.Notes"
+                              placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
+                </div>
+            </div>
+        }
+
+        @if (_step == 2)
+        {
+            <!-- ผู้ส่ง -->
+            <div class="section-card step-panel">
+                <div class="section-header">
+                    <span class="section-icon"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
+                    <span>ผู้ส่ง</span>
+                </div>
+
+                <div class="field">
+                    <div class="field-label">ชื่อผู้ส่ง</div>
+                    <input class="field-input" @bind="Model.SenderName" placeholder="ชื่อร้านค้า / ผู้ส่ง" />
+                </div>
+
+                <div class="field">
+                    <div class="field-label">เบอร์โทรผู้ส่ง</div>
+                    <input class="field-input" value="@Model.SenderPhone"
+                           @onchange="e => Model.SenderPhone = FormatThaiPhone(e.Value?.ToString())"
                            inputmode="numeric" placeholder="08x-xxx-xxxx" />
                 </div>
             </div>
-        </div>
+        }
 
-        <!-- รายละเอียด -->
-        <div class="section-card">
-            <div class="section-header">
-                <span class="section-icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
-                <span>รายละเอียด</span>
-            </div>
+        @if (_step == 3)
+        {
+            <!-- ผู้รับ -->
+            <div class="section-card step-panel">
+                <div class="section-header">
+                    <span class="section-icon"><i class="fa-solid fa-user-check" aria-hidden="true"></i></span>
+                    <span>ผู้รับ</span>
+                </div>
 
-            <div class="field">
-                <div class="field-label">วันที่รับพัสดุ<span class="required">*</span></div>
-                <input type="date" class="field-input" @bind="Model.ReceivedDate" />
-                <div class="field-hint">
-                    <i class="fa-regular fa-calendar"></i> บันทึกวันนี้: @TodayHint
+                <div class="field">
+                    <div class="field-label">ชื่อผู้รับ<span class="required">*</span></div>
+                    <input class="field-input @(ReceiverNameInvalid ? "field-input-invalid" : null)"
+                           @bind="Model.ReceiverName" placeholder="ชื่อลูกบ้าน" />
+                    @if (ReceiverNameInvalid)
+                    {
+                        <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกชื่อผู้รับ</div>
+                    }
+                </div>
+
+                <div class="field-row-2">
+                    <div class="field">
+                        <div class="field-label">ห้อง / ยูนิต<span class="required">*</span></div>
+                        <input class="field-input @(ReceiverUnitInvalid ? "field-input-invalid" : null)"
+                               @bind="Model.ReceiverUnit" placeholder="เช่น 89/86-1203" />
+                        @if (ReceiverUnitInvalid)
+                        {
+                            <div class="field-error"><i class="fa-solid fa-circle-exclamation"></i> กรุณากรอกห้อง/ยูนิต</div>
+                        }
+                    </div>
+                    <div class="field">
+                        <div class="field-label">เบอร์โทรผู้รับ</div>
+                        <input class="field-input" value="@Model.ReceiverPhone"
+                               @onchange="e => Model.ReceiverPhone = FormatThaiPhone(e.Value?.ToString())"
+                               inputmode="numeric" placeholder="08x-xxx-xxxx" />
+                    </div>
                 </div>
             </div>
-
-            <div class="field">
-                <div class="field-label">หมายเหตุ</div>
-                <textarea class="field-input" rows="3" @bind="Model.Notes"
-                          placeholder="รายละเอียดเพิ่มเติม (ถ้ามี)"></textarea>
-            </div>
-        </div>
+        }
 
         <div class="action-bar">
-            <button class="btn btn-primary" @onclick="SaveAsync">
-                <i class="fa-solid fa-floppy-disk"></i>&nbsp; บันทึกรายการ
-            </button>
+            @if (_step > 1)
+            {
+                <button class="btn btn-ghost" @onclick="GoBack">
+                    <i class="fa-solid fa-arrow-left"></i>&nbsp; ย้อนกลับ
+                </button>
+            }
+            @if (_step < 3)
+            {
+                <button class="btn btn-primary" @onclick="NextStep">
+                    ถัดไป&nbsp;<i class="fa-solid fa-arrow-right"></i>
+                </button>
+            }
+            else
+            {
+                <button class="btn btn-primary" @onclick="SaveAsync">
+                    <i class="fa-solid fa-floppy-disk"></i>&nbsp; บันทึกรายการ
+                </button>
+            }
             <button class="btn btn-secondary" @onclick="ResetForm">
                 <i class="fa-solid fa-eraser"></i>&nbsp; ล้างข้อมูล
             </button>
@@ -172,8 +220,10 @@
 @code {
     private Parcel Model { get; set; } = new();
 
+    private int _step = 1;
     private bool _showSuccess;
-    private bool _validated;
+    private bool _step1Tried;
+    private bool _step3Tried;
     private CancellationTokenSource? _successTimeoutCts;
 
     // Tracking numbers already registered in the system (sample data).
@@ -184,14 +234,22 @@
 
     private string TodayHint => DateTime.Today.ToString("D", new CultureInfo("th-TH"));
 
-    private bool ParcelNumberInvalid => _validated && string.IsNullOrWhiteSpace(Model.ParcelNumber);
-    private bool ReceiverNameInvalid => _validated && string.IsNullOrWhiteSpace(Model.ReceiverName);
-    private bool ReceiverUnitInvalid => _validated && string.IsNullOrWhiteSpace(Model.ReceiverUnit);
+    private bool ParcelNumberInvalid => _step1Tried && string.IsNullOrWhiteSpace(Model.ParcelNumber);
+    private bool ReceiverNameInvalid => _step3Tried && string.IsNullOrWhiteSpace(Model.ReceiverName);
+    private bool ReceiverUnitInvalid => _step3Tried && string.IsNullOrWhiteSpace(Model.ReceiverUnit);
 
     private string? DuplicateWarning =>
         string.IsNullOrWhiteSpace(Model.ParcelNumber) || !RegisteredTrackingNumbers.Contains(Model.ParcelNumber.Trim())
             ? null
             : $"เลขที่พัสดุนี้มีพัสดุลงทะเบียนอยู่แล้ว (ข้อมูลตัวอย่าง) — สามารถบันทึกรายการนี้ได้";
+
+    private static string StepName(int step) => step switch
+    {
+        1 => "พัสดุ",
+        2 => "ผู้ส่ง",
+        3 => "ผู้รับ",
+        _ => string.Empty
+    };
 
     private string StatusClass(string status)
     {
@@ -208,6 +266,29 @@
     private void SetStatus(string status) => Model.Status = status;
 
     private void GoHome() => Navigation.NavigateTo("/");
+
+    // Advances only forward and only after the current step is complete.
+    private void NextStep()
+    {
+        if (_step == 1 && string.IsNullOrWhiteSpace(Model.ParcelNumber))
+        {
+            _step1Tried = true;
+            return;
+        }
+
+        _step = Math.Min(3, _step + 1);
+    }
+
+    private void GoBack() => _step = Math.Max(1, _step - 1);
+
+    // Jump back to an earlier step; forward jumps are intentionally blocked.
+    private void GoToStep(int step)
+    {
+        if (step < _step)
+        {
+            _step = step;
+        }
+    }
 
     // Formats Thai mobile numbers while typing: keeps digits only, groups as 08x-xxx-xxxx.
     private static string FormatThaiPhone(string? value)
@@ -228,9 +309,16 @@
 
     private async Task SaveAsync()
     {
-        _validated = true;
-        if (string.IsNullOrWhiteSpace(Model.ParcelNumber)
-            || string.IsNullOrWhiteSpace(Model.ReceiverName)
+        if (string.IsNullOrWhiteSpace(Model.ParcelNumber))
+        {
+            _step1Tried = true;
+            _step = 1;
+            _showSuccess = false;
+            return;
+        }
+
+        _step3Tried = true;
+        if (string.IsNullOrWhiteSpace(Model.ReceiverName)
             || string.IsNullOrWhiteSpace(Model.ReceiverUnit))
         {
             _showSuccess = false;
@@ -264,7 +352,9 @@
     private void ResetForm()
     {
         Model = new Parcel { ReceivedDate = DateTime.Today };
-        _validated = false;
+        _step1Tried = false;
+        _step3Tried = false;
+        _step = 1;
     }
 
     public void Dispose()

@@ -65,6 +65,120 @@
     border: 1px solid color-mix(in srgb, var(--status-error) 35%, white);
 }
 
+/* ---- Step indicator ---- */
+
+.step-indicator {
+    display: flex;
+    list-style: none;
+    margin: 0 0 1rem;
+    padding: 0;
+}
+
+.step-item {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+}
+
+.step-item::before {
+    content: "";
+    position: absolute;
+    top: calc(.75rem - 1px);
+    left: -50%;
+    right: 50%;
+    height: 2px;
+    background-color: rgba(255, 255, 255, .28);
+    z-index: 0;
+}
+
+.step-item:first-child::before {
+    display: none;
+}
+
+.step-item.step-active::before,
+.step-item.step-done::before {
+    background-color: rgba(255, 255, 255, .7);
+}
+
+.step-dot {
+    position: relative;
+    z-index: 1;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .78rem;
+    font-weight: 700;
+    font-family: inherit;
+    border: 2px solid rgba(255, 255, 255, .5);
+    background-color: rgba(255, 255, 255, .12);
+    color: rgba(255, 255, 255, .85);
+    cursor: pointer;
+    transition: background-color .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.step-dot i {
+    font-size: .6rem;
+}
+
+.step-dot:disabled {
+    cursor: default;
+}
+
+.step-dot:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+}
+
+.step-label {
+    font-size: .75rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .7);
+}
+
+.step-active .step-dot {
+    background-color: var(--on-brand);
+    border-color: var(--on-brand);
+    color: #12241f;
+}
+
+.step-active .step-label {
+    color: var(--on-brand);
+}
+
+.step-done .step-dot {
+    background-color: var(--brand-500);
+    border-color: var(--brand-500);
+    color: var(--on-brand);
+}
+
+.step-done .step-label {
+    color: rgba(255, 255, 255, .85);
+}
+
+/* Gentle entrance when the step content changes. */
+.step-panel {
+    animation: step-fade .28s ease;
+}
+
+@keyframes step-fade {
+    from {
+        opacity: 0;
+        transform: translateY(.35rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
 /* ---- Cards + calm section headers ---- */
 
 .section-card {
@@ -400,6 +514,20 @@ textarea.field-input {
 .btn-primary:active {
     transform: translateY(1px);
     box-shadow: 0 3px 8px -4px rgba(0, 100, 96, .6), inset 0 1px 0 rgba(255, 255, 255, .2);
+}
+
+.btn-ghost {
+    width: 100%;
+    padding: .55rem 1rem;
+    background: none;
+    color: var(--text-secondary);
+    font-size: .92rem;
+    font-weight: 600;
+    transition: background-color .15s ease;
+}
+
+.btn-ghost:hover {
+    background-color: rgba(13, 32, 28, .06);
 }
 
 .btn-secondary {
